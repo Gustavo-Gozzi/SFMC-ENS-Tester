@@ -16,15 +16,18 @@ class Ens:
     def validate_token():
         credential = Ens.get_user_credentials()
         data = request.get_json()
+        print("MCE passou por aqui!")
 
-        if not data: return jsonify({"erro": "Nenhum json enviado"}), 400
+        if not data: 
+            print("Nao recebemos nada! (mas o mce chegoua qui!)")
+            return jsonify({"erro": "Nenhum json enviado"}), 400
 
 
         client_id_recebido = data.get("clientId")
         clienst_secret_recebido = data.get("clientSecret")
 
         if client_id_recebido == credential["clientId"] and clienst_secret_recebido == credential["clientSecret"]:
-            print("Chegou até aqui!")
+            print("MCE Chegou aqui e passou o clientId e Secret! Tome o token!")
             return jsonify({
                 "status": "sucesso",
                 "msg": "Credenciais Validas",
@@ -32,7 +35,9 @@ class Ens:
                 "expires_in": 3600
             }), 200
         
-        else: return jsonify({"erro": "credenciais invalidas"}), 401
+        else:
+            print("O MCE Chegou até aqui, mas as credenciais estão invalidas ;/") 
+            return jsonify({"erro": "credenciais invalidas"}), 401
 
     
     @staticmethod
