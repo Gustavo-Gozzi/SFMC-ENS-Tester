@@ -24,6 +24,7 @@ class Ens:
         clienst_secret_recebido = data.get("clientSecret")
 
         if client_id_recebido == credential["clientId"] and clienst_secret_recebido == credential["clientSecret"]:
+            print("Chegou até aqui!")
             return jsonify({
                 "status": "sucesso",
                 "msg": "Credenciais Validas",
@@ -37,5 +38,14 @@ class Ens:
     @staticmethod
     def see_response():
         data = request.get_json()
+        auth_header = request.headers.get('Authorization')
+
+        if not auth_header:
+            print("Acesso negado!")
+            return jsonify({"erro": "Token não fornecido"}), 401
+        
+        partes_do_header = auth_header.split(" ")
+        token_fornecido = partes_do_header[1]
+        print(f"Token recebido: {token_fornecido}")
         print(data)
         return jsonify({"msg": "sucesso"}), 200
