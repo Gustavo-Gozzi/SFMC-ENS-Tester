@@ -14,7 +14,7 @@ class Ens:
 
     @staticmethod
     def validate_token():
-        credential = get_user_credentials()
+        credential = Ens.get_user_credentials()
         data = request.get_json()
 
         if not data: return jsonify({"erro": "Nenhum json enviado"}), 400
