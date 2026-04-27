@@ -8,6 +8,6 @@ def register_routes(app):
         return Ens.validate_token()
 
     
-    @app.rout('/whatsapp', methods=["POST"])
+    @app.route('/whatsapp', methods=["POST"])
     def whatsapp():
         return Ens.see_response()
