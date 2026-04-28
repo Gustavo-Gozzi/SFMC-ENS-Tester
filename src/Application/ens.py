@@ -1,5 +1,6 @@
 from flask import request, jsonify, make_response
 import os
+import base64
 
 class Ens:
     
@@ -19,7 +20,13 @@ class Ens:
         auth_header = request.headers.get('Authorization')
         print("Header:")
         print(auth_header)
-        print(f"Dados brutos capturados: {data}")
+        
+        auth_encoded = base64.b64decode(auth_header)
+        final_text = auth_encoded.decode('utf-8')
+
+        credenciais = final_text.split(":")
+        print(f"client_id: {credenciais[0]} | client_secret: {credenciais[1]}")
+
 
         if not data: 
             print("Nao recebemos nada! (mas o mce chegou aqui!)")
