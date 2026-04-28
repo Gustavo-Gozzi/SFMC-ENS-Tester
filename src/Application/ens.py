@@ -17,6 +17,7 @@ class Ens:
         print("Inicio da função Validate Token")
         data = request.form if request.form else request.get_json(force=True, silent=True)
         auth_header = request.headers.get('Authorization')
+        print("Header:")
         print(auth_header)
         print(f"Dados brutos capturados: {data}")
 
