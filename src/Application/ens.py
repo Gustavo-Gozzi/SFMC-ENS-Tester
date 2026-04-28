@@ -14,6 +14,7 @@ class Ens:
 
     @staticmethod
     def validate_token():
+        print("Inicio da função Validate Token")
         credential = Ens.get_user_credentials()
         data = request.get_json()
         print("MCE passou por aqui!")
