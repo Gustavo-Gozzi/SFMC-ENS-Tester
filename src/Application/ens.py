@@ -32,6 +32,9 @@ class Ens:
 
         client_id_recebido = credentials[0]
         client_secret_recebido = credentials[1]
+        
+        print(client_id_recebido)
+        print(client_secret_recebido)
 
         if not data: 
             print("Nao recebemos nada! (mas o mce chegou aqui!)")
@@ -43,7 +46,7 @@ class Ens:
         flag_clientId =  client_id_recebido ==  credential["clientId"]
         flag_clientSecret = client_secret_recebido == credential["clientSecret"]
 
-        if flag_clientId and client_secret_recebido == flag_clientSecret:
+        if flag_clientId and flag_clientSecret:
             print("MCE Chegou aqui e passou o clientId e Secret! Tome o token!")
             response = {
                 "access_token": "token_teste_1234",
