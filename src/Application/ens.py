@@ -15,31 +15,35 @@ class Ens:
     @staticmethod
     def validate_token():
         print("Inicio da função Validate Token")
-        data = request.get_json()
-        print(data)
-        credential = Ens.get_user_credentials()
-        print("MCE passou por aqui!")
+        data = request.form if request.form else request.get_json(force=True, silent=True)
+        
+        print(f"Dados brutos capturados: {data}")
 
         if not data: 
-            print("Nao recebemos nada! (mas o mce chegoua qui!)")
-            return jsonify({"erro": "Nenhum json enviado"}), 400
+            print("Nao recebemos nada! (mas o mce chegou aqui!)")
+            return jsonify({"error": "invalid_request"}), 400
 
+        credential = Ens.get_user_credentials()
+        print("MCE passou por aqui e extraímos os dados!")
 
-        client_id_recebido = data.get("clientId")
-        clienst_secret_recebido = data.get("clientSecret")
+        # 2. Captura lidando com camelCase ou snake_case (segurança extra)
+        client_id_recebido = data.get("clientId") or data.get("client_id")
+        client_secret_recebido = data.get("clientSecret") or data.get("client_secret")
 
-        if client_id_recebido == credential["clientId"] and clienst_secret_recebido == credential["clientSecret"]:
+        if client_id_recebido == credential["clientId"] and client_secret_recebido == credential["clientSecret"]:
             print("MCE Chegou aqui e passou o clientId e Secret! Tome o token!")
+            
+            # 3. O RETORNO PADRÃO OAUTH 2.0 STRICT
+            # Removi "status" e "msg". Adicionei "token_type".
             return jsonify({
-                "status": "sucesso",
-                "msg": "Credenciais Validas",
                 "access_token": "token_teste_1234",
+                "token_type": "Bearer",
                 "expires_in": 3600
             }), 200
         
         else:
             print("O MCE Chegou até aqui, mas as credenciais estão invalidas ;/") 
-            return jsonify({"erro": "credenciais invalidas"}), 401
+            return jsonify({"error": "invalid_client"}), 401
 
     
     @staticmethod
