@@ -16,7 +16,8 @@ class Ens:
     def validate_token():
         print("Inicio da função Validate Token")
         data = request.form if request.form else request.get_json(force=True, silent=True)
-        
+        auth_header = request.headers.get('Authorization')
+        print(auth_header)
         print(f"Dados brutos capturados: {data}")
 
         if not data: 
@@ -30,7 +31,7 @@ class Ens:
         client_id_recebido = data.get("clientId") or data.get("client_id")
         client_secret_recebido = data.get("clientSecret") or data.get("client_secret")
         print(f"{client_id_recebido} | {client_secret_recebido}")
-        
+
         if client_id_recebido == credential["clientId"] and client_secret_recebido == credential["clientSecret"]:
             print("MCE Chegou aqui e passou o clientId e Secret! Tome o token!")
             
