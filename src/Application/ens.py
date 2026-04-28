@@ -29,7 +29,8 @@ class Ens:
         # 2. Captura lidando com camelCase ou snake_case (segurança extra)
         client_id_recebido = data.get("clientId") or data.get("client_id")
         client_secret_recebido = data.get("clientSecret") or data.get("client_secret")
-
+        print(f"{client_id_recebido} | {client_secret_recebido}")
+        
         if client_id_recebido == credential["clientId"] and client_secret_recebido == credential["clientSecret"]:
             print("MCE Chegou aqui e passou o clientId e Secret! Tome o token!")
             
