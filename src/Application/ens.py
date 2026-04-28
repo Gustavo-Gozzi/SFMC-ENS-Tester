@@ -21,12 +21,17 @@ class Ens:
         print("Header:")
         print(auth_header)
         
-        auth_encoded = base64.b64decode(auth_header)
-        final_text = auth_encoded.decode('utf-8')
+        token = auth_header.split(" ")
 
-        credenciais = final_text.split(":")
-        print(f"client_id: {credenciais[0]} | client_secret: {credenciais[1]}")
+        text_encoded = token[1]
 
+        auth_encoded = base64.b64decode(text_encoded)
+        auth_decodificado = auth_encoded.decode('utf-8')
+
+        credentials = auth_decodificado.split(":")
+
+        client_id_recebido = credentials[0]
+        client_secret_recebido = credentials[1]
 
         if not data: 
             print("Nao recebemos nada! (mas o mce chegou aqui!)")
@@ -35,21 +40,18 @@ class Ens:
         credential = Ens.get_user_credentials()
         print("MCE passou por aqui e extraímos os dados!")
 
-        # 2. Captura lidando com camelCase ou snake_case (segurança extra)
-        client_id_recebido = data.get("clientId") or data.get("client_id")
-        client_secret_recebido = data.get("clientSecret") or data.get("client_secret")
-        print(f"{client_id_recebido} | {client_secret_recebido}")
+        flag_clientId =  client_id_recebido ==  credential["clientId"]
+        flag_clientSecret = client_secret_recebido == credential["clientSecret"]
 
-        if client_id_recebido == credential["clientId"] and client_secret_recebido == credential["clientSecret"]:
+        if flag_clientId and client_secret_recebido == flag_clientSecret:
             print("MCE Chegou aqui e passou o clientId e Secret! Tome o token!")
-            
-            # 3. O RETORNO PADRÃO OAUTH 2.0 STRICT
-            # Removi "status" e "msg". Adicionei "token_type".
-            return jsonify({
+            response = {
                 "access_token": "token_teste_1234",
                 "token_type": "Bearer",
                 "expires_in": 3600
-            }), 200
+            }
+            print(response)
+            return jsonify(response), 200
         
         else:
             print("O MCE Chegou até aqui, mas as credenciais estão invalidas ;/") 

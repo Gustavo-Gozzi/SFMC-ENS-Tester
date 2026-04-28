@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 .env
 register_ens.py
+testes.py
